@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Country List Viewer
 
-## Getting Started
+This project is a Next.js application that fetches and displays a list of countries from the REST Countries API. It provides features such as searching, detailed country pages, country comparison, pagination, dark mode, and error handling.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. Fetch and Display Country List
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Uses Apollo Client to fetch country data.
+- Displays the data in a paginated table.
+- Supports light and dark mode.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Country Details Page
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Implements dynamic routing to show details about a selected country.
+- The route follows the format: `/country/[name]`, where `[name]` is the country's name.
 
-## Learn More
+### 3. Search Functionality
 
-To learn more about Next.js, take a look at the following resources:
+- A search bar allows users to filter countries in real-time as they type.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Country Comparison
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Users can select two countries to compare their population, area, and "GDP".
+- Displays the comparison in a Chart.
 
-## Deploy on Vercel
+### 5. Pagination
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Allows users to navigate through the list of countries easily.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 6. Dark Mode
+
+- Users can toggle between light and dark mode.
+
+### 7. Error Handling and Loading States
+
+- Displays friendly messages and loaders during data fetching or errors.
+
+## Technologies Used
+
+- **Next.js** – React framework for server-side rendering and routing.
+- **Apollo Client** – Handles GraphQL queries and caching.
+- **GraphQL** – Fetches structured country data.
+- **Tailwind CSS** – Styles the application efficiently.
+- **TypeScript** – Adds type safety to the project.
+
+## Installation
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- Node.js (v16 or later)
+- yarn
+
+### Setup
+
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/bright-abel/country-list-viewer.git
+   cd country-list-viewer
+   ```
+
+2. Install dependencies:
+
+   ```sh
+   yarn install
+   ```
+
+3. Start the development server:
+
+   ```sh
+   yarn dev
+   ```
+
+4. Open the app in your browser at `http://localhost:3000`.
+
+## Usage
+
+### Viewing Country List
+
+- Navigate to the homepage to see a list of countries.
+- Use the search bar to filter countries.
+
+### Viewing Country Details
+
+- Click on a country to view detailed information.
+
+### Comparing Countries
+
+- Select two countries to compare population, area, and "GDP".
+
+### Dark Mode
+
+- Toggle the dark mode switch to change themes.
+
+## API Information
+
+- The project uses the **REST Countries API**: [https://restcountries.com/v3.1/all](https://restcountries.com/v3.1/all)
+- Note: The API does not return GDP data, so additional sources may be required.
+
+## Contributing
+
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature-branch`.
+3. Commit your changes: `git commit -m "Add new feature"`.
+4. Push to the branch: `git push origin feature-branch`.
+5. Submit a pull request.
