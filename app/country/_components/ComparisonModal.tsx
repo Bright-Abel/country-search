@@ -39,9 +39,29 @@ const ComparisonModal = ({ length, countries }: Props) => {
         isOpen={isOpen}
         placement="center"
         hideCloseButton
+        motionProps={{
+          variants: {
+            enter: {
+              y: 0,
+              opacity: 1,
+              transition: {
+                duration: 0.3,
+                ease: "easeOut",
+              },
+            },
+            exit: {
+              y: -20,
+              opacity: 0,
+              transition: {
+                duration: 0.2,
+                ease: "easeIn",
+              },
+            },
+          },
+        }}
         // onOpenChange={onOpenChange}
       >
-        <ModalContent className="rounded-lg w-[90%] h-[60%] max-w-[800px] pb-8 shadow-lg  bg-white dark:bg-dark-400">
+        <ModalContent className="rounded-lg w-[90%] h-[60%] max-w-[800px] py-2 shadow-lg  bg-white dark:bg-dark-400">
           {(onClose) => (
             <>
               <ModalHeader className=" w-full flex  justify-between px-4 text-dark-300 dark:text-light-500">
@@ -68,7 +88,7 @@ const ComparisonModal = ({ length, countries }: Props) => {
                   <IoClose className="text-xl" />
                 </button>
               </ModalHeader>
-              <ModalBody className="w-full pl-4 pr-0">
+              <ModalBody className="w-full px-4">
                 <Chart data={formattedData} />
               </ModalBody>
             </>
