@@ -10,13 +10,14 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  // overflow: hidden;
+  overflow: hidden;
 `;
 
 export const Content = styled.div`
   width: 100%;
   height: 100%;
   padding: 0 8px;
+  overflow: auto;
 `;
 
 export const PHeader = styled.div`
@@ -28,6 +29,11 @@ export const Heading = styled.p`
   font-weight: 600;
   text-align: center;
   color: var(--color-950);
+`;
+
+export const TableDiv = styled.div`
+  width: 100%;
+  overflow: auto;
 `;
 
 export const StyledTable = styled.table`

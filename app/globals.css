@@ -126,9 +126,16 @@ a {
   display: flex;
   width: 100%;
   align-items: center;
-  padding-inline: 16px;
+  /* padding-inline: 2px; */
   list-style: none;
-  gap: 8px;
+  gap: 2px;
+}
+
+@media (min-width: 768px) {
+  .paginate_classname {
+    gap: 8px;
+    padding-inline: 10px;
+  }
 }
 
 .nextClassName {
