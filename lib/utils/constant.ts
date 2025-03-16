@@ -7,6 +7,6 @@ export const countryTableHeader = [
   "currency(symbol)",
   "languages",
   "flags",
-  "maps",
+  // "maps",
   "details",
 ];

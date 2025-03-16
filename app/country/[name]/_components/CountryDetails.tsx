@@ -2,11 +2,24 @@
 
 import { GET_COUNTRY_DETAILS } from "@/lib/queries";
 import { useQuery } from "@apollo/client";
-import Image from "next/image";
+
 import Link from "next/link";
 import { useMemo } from "react";
 import Flag from "./Flag";
 import DetailsSkeleton from "@/components/skeletonLoader/DetailsSkeleton";
+import {
+  Section,
+  Title,
+  Subtitle,
+  GridContainer,
+  InfoItem,
+  Strong,
+  Text,
+  MapsContainer,
+  MapsTitle,
+  StyledLink,
+} from "@/styles/countryDetail";
+import { ErrorMessage } from "@/styles/error";
 
 const CountryDetails = ({ country }: { country: string }) => {
   const { data, loading, error } = useQuery<CountryDetails>(
@@ -57,56 +70,41 @@ const CountryDetails = ({ country }: { country: string }) => {
   }, [data]);
 
   if (loading) return <DetailsSkeleton />;
-  if (error)
-    return (
-      <div className="w-full h-full p-6 flex justify-center items-center text-2xl font-semibold text-red-500 animate-bounce">
-        Error: {error.message}
-      </div>
-    );
+  if (error) return <ErrorMessage>Error: {error.message}</ErrorMessage>;
   if (!data)
-    return (
-      <div className="w-full h-full p-6 flex justify-center items-center text-2xl font-semibold text-blue-500 animate-bounce">
-        No country data found
-      </div>
-    );
+    return <ErrorMessage color="#56b8ff">No country data found</ErrorMessage>;
 
   const countryData = data.country[0];
 
   return (
-    <section className="w-full h-full p-6 bg-gray-100 dark:bg-dark-300 min-h-screen rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-center text-brand-100 dark:text-brand-200">
-        {countryData.name.common}
-      </h1>
-      <p className="text-gray-600 dark:text-light-500 text-center">
-        Official Name: {countryData.name.official}
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4 mt-6 p-4 bg-white dark:bg-dark-200 rounded-lg shadow">
+    <Section>
+      <Title>{countryData.name.common}</Title>
+      <Subtitle>Official Name: {countryData.name.official}</Subtitle>
+
+      <GridContainer>
         {newArr.map((item, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <strong className="dark:text-light-200 text-dark-400 ">
-              {item.name}:
-            </strong>
-            <p className="text-gray-600 dark:text-light-500">{item.value}</p>
-          </div>
+          <InfoItem key={index}>
+            <Strong>{item.name}:</Strong>
+            <Text>{item.value}</Text>
+          </InfoItem>
         ))}
-      </div>
+      </GridContainer>
 
       <Flag countryData={countryData} />
 
-      <div className="mt-6 text-center">
-        <h2 className="text-xl font-semibold">Maps</h2>
+      <MapsContainer>
+        <MapsTitle>Maps</MapsTitle>
         <p>
-          <Link
+          <StyledLink
             href={countryData.maps.googleMaps}
-            className="text-blue-500 underline"
             target="_blank"
             rel="noopener noreferrer"
           >
             View on Google Maps
-          </Link>
+          </StyledLink>
         </p>
-      </div>
-    </section>
+      </MapsContainer>
+    </Section>
   );
 };
 

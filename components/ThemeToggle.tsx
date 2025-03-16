@@ -4,6 +4,23 @@ import { FiSun, FiMoon } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import styled from "styled-components";
+
+const IconButton = styled.button`
+  outline: none;
+  &:focus {
+    outline: none;
+  }
+  svg {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-950);
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+  }
+`;
 
 const ThemeToggle = () => {
   const [mounted, setMounted] = useState(false);
@@ -26,19 +43,17 @@ const ThemeToggle = () => {
 
   if (resolvedTheme === "dark") {
     return (
-      <FiSun
-        onClick={() => setTheme("light")}
-        className="text-brand-300 dark:text-brand-200 text-2xl  cursor-pointer"
-      />
+      <IconButton type="button" onClick={() => setTheme("light")}>
+        <FiSun />
+      </IconButton>
     );
   }
 
   if (resolvedTheme === "light") {
     return (
-      <FiMoon
-        onClick={() => setTheme("dark")}
-        className=" text-2xl cursor-pointer text-brand-300 dark:text-brand-200"
-      />
+      <IconButton type="button" onClick={() => setTheme("dark")}>
+        <FiMoon />
+      </IconButton>
     );
   }
 };

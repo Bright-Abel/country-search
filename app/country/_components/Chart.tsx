@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
+import styled from "styled-components";
 
 interface ChartProps {
   data: { name: string; Population: number; Area: number }[];
@@ -18,70 +19,78 @@ interface ChartProps {
 
 const Chart = ({ data }: ChartProps) => {
   const { theme } = useTheme();
+  const tickColor = theme === "dark" ? "#f1f5f9" : "#4a5565";
 
   const formatNumber = (num: number) => new Intl.NumberFormat().format(num);
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <AreaChart
-        data={data}
-        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-      >
-        <defs>
-          <linearGradient id="gdpGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-          </linearGradient>
+    <ChartContainer>
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart
+          data={data}
+          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        >
+          <defs>
+            <linearGradient id="gdpGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+            </linearGradient>
 
-          <linearGradient id="populationGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-          </linearGradient>
+            <linearGradient id="populationGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+            </linearGradient>
 
-          <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#ffc658" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#ffc658" stopOpacity={0} />
-          </linearGradient>
-        </defs>
+            <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#ffc658" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#ffc658" stopOpacity={0} />
+            </linearGradient>
+          </defs>
 
-        <XAxis dataKey="name" tick={{ fill: "#333", fillOpacity: 1 }} />
-        <YAxis
-          tickFormatter={formatNumber}
-          tick={{ fill: "#333", fillOpacity: 1 }}
-        />
-        <CartesianGrid vertical={false} />
-        {/* <Tooltip formatter={(value) => formatNumber(Number(value))} /> */}
-        <Tooltip
-          formatter={(value) => formatNumber(Number(value))}
-          contentStyle={{
-            backgroundColor: theme === "dark" ? "#444" : "#e9ecef",
-          }}
-        />
-        <Legend />
+          <XAxis dataKey="name" tick={{ fill: tickColor, fillOpacity: 1 }} />
+          <YAxis
+            tickFormatter={formatNumber}
+            tick={{ fill: tickColor, fillOpacity: 1 }}
+          />
+          <CartesianGrid vertical={false} />
+          {/* <Tooltip formatter={(value) => formatNumber(Number(value))} /> */}
+          <Tooltip
+            formatter={(value) => formatNumber(Number(value))}
+            contentStyle={{
+              backgroundColor: theme === "dark" ? "#444" : "#e9ecef",
+            }}
+          />
+          <Legend />
 
-        <Area
-          type="monotone"
-          dataKey="GDP"
-          stroke="#8884d8"
-          fill="url(#gdpGradient)"
-          name="GDP ($)"
-        />
-        <Area
-          type="monotone"
-          dataKey="Population"
-          stroke="#82ca9d"
-          fill="url(#populationGradient)"
-          name="Population"
-        />
-        <Area
-          type="monotone"
-          dataKey="Area"
-          stroke="#ffc658"
-          fill="url(#areaGradient)"
-          name="Area (sq km)"
-        />
-      </AreaChart>
-    </ResponsiveContainer>
+          <Area
+            type="monotone"
+            dataKey="GDP"
+            stroke="#8884d8"
+            fill="url(#gdpGradient)"
+            name="GDP ($)"
+          />
+          <Area
+            type="monotone"
+            dataKey="Population"
+            stroke="#82ca9d"
+            fill="url(#populationGradient)"
+            name="Population"
+          />
+          <Area
+            type="monotone"
+            dataKey="Area"
+            stroke="#ffc658"
+            fill="url(#areaGradient)"
+            name="Area (sq km)"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </ChartContainer>
   );
 };
 
 export default Chart;
+
+const ChartContainer = styled.div`
+  width: 100%;
+  height: 340px;
+`;

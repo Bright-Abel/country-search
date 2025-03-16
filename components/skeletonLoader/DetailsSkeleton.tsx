@@ -1,33 +1,83 @@
+import styled from "styled-components";
+
+const SkeletonContainer = styled.section`
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  background-color: var(--details-bg);
+  min-height: 100vh;
+  border-radius: 0.5rem;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  animation: pulse 1.5s infinite ease-in-out;
+`;
+
+const SkeletonBlock = styled.div<{ width?: string; height?: string }>`
+  width: ${({ width }) => width || "100%"};
+  height: ${({ height }) => height || "100%"};
+  background-color: var(--loader-bg);
+  border-radius: 0.375rem;
+  margin: 0.5rem auto;
+
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
+
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: var(--details-grid);
+  border-radius: 0.5rem;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
 const DetailsSkeleton = () => {
   return (
-    <section className="w-full h-full p-6 bg-gray-100 dark:bg-dark-300 min-h-screen rounded-lg shadow-lg animate-pulse">
+    <SkeletonContainer>
       {/* Title */}
-      <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 mx-auto rounded"></div>
-      <div className="h-4 w-64 bg-gray-200 dark:bg-gray-700 mx-auto mt-2 rounded"></div>
+      <SkeletonBlock width="12rem" height="2rem" />
+      <SkeletonBlock width="16rem" height="1rem" />
 
       {/* Grid Content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 p-4 bg-white dark:bg-dark-200 rounded-lg shadow">
-        {Array(12)
-          .fill(0)
-          .map((_, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <div className="h-6 w-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              <div className="h-6 w-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
-            </div>
-          ))}
-      </div>
+      <GridContainer>
+        {Array.from({ length: 12 }).map((_, index) => (
+          <div key={index} style={{ display: "flex", gap: "0.5rem" }}>
+            <SkeletonBlock width="5rem" height="1.5rem" />
+            <SkeletonBlock width="8rem" height="1.5rem" />
+          </div>
+        ))}
+      </GridContainer>
 
       {/* Flag Placeholder */}
-      <div className="mt-6 text-center">
-        <div className="h-40 w-64 bg-gray-200 dark:bg-gray-700 mx-auto rounded-lg"></div>
+      <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
+        <SkeletonBlock width="16rem" height="10rem" />
       </div>
 
       {/* Maps Placeholder */}
-      <div className="mt-6 text-center">
-        <div className="h-6 w-32 bg-gray-200 dark:bg-gray-700 mx-auto rounded"></div>
-        <div className="h-4 w-40 bg-gray-200 dark:bg-gray-700 mx-auto mt-2 rounded"></div>
+      <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
+        <SkeletonBlock width="8rem" height="1.5rem" />
+        <SkeletonBlock width="10rem" height="1rem" />
       </div>
-    </section>
+    </SkeletonContainer>
   );
 };
 

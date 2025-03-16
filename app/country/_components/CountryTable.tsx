@@ -5,28 +5,34 @@ import CountryTableSkeleton from "@/components/skeletonLoader/CountryTableSkelet
 import { GET_ALL_COUNTRIES } from "@/lib/queries";
 import { countryTableHeader } from "@/lib/utils/constant";
 import { useQuery } from "@apollo/client";
-import clsx from "clsx";
+import { ErrorMessage } from "@/styles/error";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAndSort } from "@/lib/features/sliceFeature";
-import { RootState } from "@/store";
 import Search from "@/components/Search";
+import {
+  Container,
+  Content,
+  PHeader,
+  Heading,
+  StyledTable,
+  Thead,
+  SelectTh,
+  Th,
+  TableRow,
+  Input,
+  Td,
+  Tr,
+  NoData,
+} from "@/styles/countryTable";
 
 const CountryTable = () => {
-  const { filtered_data } = useSelector((state: RootState) => state.dataSlice);
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedRows, setSelectedRows] = useState<Country[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 15;
-  const dispatch = useDispatch();
+  const rowsPerPage = 20;
 
-  const { loading, error } = useQuery<AllCountires>(GET_ALL_COUNTRIES, {
-    onCompleted: (data) => {
-      dispatch(fetchAndSort(data.countries));
-    },
-    onError: (err) => console.error("Apollo Error:", err),
-  });
+  const { data, loading, error } = useQuery<AllCountires>(GET_ALL_COUNTRIES);
 
   // Toggling individual row
   const toggleRow = (country: Country) => {
@@ -41,148 +47,112 @@ const CountryTable = () => {
   };
 
   if (loading) return <CountryTableSkeleton />;
-  if (error)
-    return (
-      <div className="w-full h-full p-6 flex justify-center items-center text-2xl font-semibold text-red-500 animate-bounce">
-        Error: {error.message}
-      </div>
-    );
+  if (error) return <ErrorMessage>Error: {error.message}</ErrorMessage>;
 
   const paginatedData =
-    filtered_data &&
-    filtered_data.slice(
+    data?.countries &&
+    data?.countries.slice(
       (currentPage - 1) * rowsPerPage,
       currentPage * rowsPerPage
     );
-  return (
-    <div className="w-full h-full flex overflow-hidden flex-col justify-between">
-      <div className="w-full overflow-auto h-[85%] px-2 space-y-3 ">
-        <Search length={selectedRows.length} countries={selectedRows} />
-        <div className="w-full text-center  ">
-          <p className="!text-2xl capitalize font-semibold text-brand-100 dark:text-brand-200 ">
-            {" "}
-            Select atleast two rows to compare
-          </p>
-        </div>
-        <table className="w-full table-auto xl:table-fixed">
-          <thead className="bg-light-100 dark:bg-dark-400">
-            <tr className="text-sm text-left  capitalize ">
-              <th className=" px-2 py-3 w-[7%] rounded-tl-lg text-dark-600 dark:text-light-100 capitalize">
-                Select
-              </th>
-              {countryTableHeader.map((header, index) => (
-                <th
-                  key={index}
-                  className={clsx(
-                    "px-2 py-3 text-dark-600 dark:text-light-100 capitalize ",
 
-                    index === countryTableHeader.length - 1 && "rounded-tr-lg"
-                    // header === "flags" && "w-[5%]",
-                    // (header === "maps" ||
-                    //   header === "area" ||
-                    //   header === "region") &&
-                    //   "w-[8%]"
-                  )}
-                >
-                  {header}
-                </th>
+  const displayedData = paginatedData?.filter((row) =>
+    row.name.common.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  return (
+    <Container>
+      <Content>
+        <Search
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          length={selectedRows.length}
+          countries={selectedRows}
+        />
+        <PHeader>
+          <Heading> Select atleast two rows to compare</Heading>
+        </PHeader>
+        <StyledTable>
+          <Thead>
+            <Tr>
+              <SelectTh>Select</SelectTh>
+              {countryTableHeader.map((header, index) => (
+                <Th key={index}>{header}</Th>
               ))}
-            </tr>
-          </thead>
+            </Tr>
+          </Thead>
           <tbody>
-            {paginatedData && paginatedData.length > 0 ? (
-              paginatedData?.map((row, index) => (
-                <tr
+            {displayedData && displayedData.length > 0 ? (
+              displayedData?.map((row, index) => (
+                <TableRow
                   key={index}
-                  className={clsx(
-                    "text-left cursor-pointer text-xs md:text-sm",
-                    selectedRows.some(
-                      (c: any) => c.name.common === row.name.common
-                    )
-                      ? "bg-light-400 dark:bg-dark-800 text-dark-400 dark:text-white"
-                      : "bg-white dark:bg-dark-300"
+                  isSelected={selectedRows.some(
+                    (c) => c.name.common === row.name.common
                   )}
                 >
-                  <td className="table-data">
-                    <input
+                  <Td>
+                    <Input
                       type="checkbox"
                       checked={selectedRows.some(
                         (c: any) => c.name.common === row.name.common
                       )}
                       onChange={() => toggleRow(row)}
-                      className="outline-none focus:outline-none cursor-pointer"
                     />
-                  </td>
+                  </Td>
 
-                  <td className="table-data">{row.name.common}</td>
+                  <Td>{row.name.common}</Td>
 
-                  <td className="table-data">{row.capital?.[0] ?? "N/A"}</td>
-                  <td className="table-data">{row.region}</td>
-                  <td className="table-data">
-                    {row.population.toLocaleString()}
-                  </td>
-                  <td className="table-data">{row.area.toLocaleString()}</td>
-                  <td className="table-data">
+                  <Td>{row.capital?.[0] ?? "N/A"}</Td>
+                  <Td>{row.region}</Td>
+                  <Td>{row.population.toLocaleString()}</Td>
+                  <Td>{row.area.toLocaleString()}</Td>
+                  <Td>
                     {Object.values(row.currencies || {})[0]?.name ?? "N/A"}(
                     {Object.values(row.currencies || {})[0]?.symbol ?? "N/A"})
-                  </td>
-                  <td className="table-data">
-                    {Object.values(row.languages || {}).join(", ")}
-                  </td>
-                  <td className="table-data">
+                  </Td>
+                  <Td>{Object.values(row.languages || {}).join(", ")}</Td>
+                  <Td>
                     <Image
                       src={row.flags.png}
                       alt={row.name.common}
                       width={30}
                       height={20}
                     />
-                  </td>
-                  <td className="table-data">
-                    <Link
-                      href={row.maps.googleMaps}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-blue-500"
-                    >
-                      view
-                    </Link>
-                  </td>
-                  <td className="table-data">
+                  </Td>
+
+                  <Td>
                     <Link
                       href={`/country/${row.name.common.replace(/\s/g, "-")}`}
                       // target="_blank"
                       // rel="noreferrer"
-                      className="text-blue-500"
                     >
                       Details
                     </Link>
-                  </td>
-                </tr>
+                  </Td>
+                </TableRow>
               ))
             ) : (
               <tr>
-                <td
-                  className="text-center cursor-pointer  text-brand-100 dark:text-brand-200 font-semibold text-4xl"
-                  colSpan={countryTableHeader.length + 1}
-                >
+                <NoData colSpan={countryTableHeader.length + 1}>
                   No data found for the search query
-                </td>
+                </NoData>
               </tr>
             )}
           </tbody>
-        </table>
-      </div>
-      {filtered_data && filtered_data.length > 10 && (
-        <div className="w-full flex justify-center">
-          <PaginateTwo
-            totalDocs={filtered_data.length}
-            itemsPerPage={rowsPerPage}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
-        </div>
-      )}
-    </div>
+        </StyledTable>
+      </Content>
+      {!searchQuery &&
+        data?.countries &&
+        data?.countries.length > rowsPerPage && (
+          <div className="w-full flex justify-center">
+            <PaginateTwo
+              totalDocs={data?.countries.length}
+              itemsPerPage={rowsPerPage}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </div>
+        )}
+    </Container>
   );
 };
 

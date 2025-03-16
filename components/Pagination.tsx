@@ -1,7 +1,7 @@
 import React, { Dispatch } from "react";
 
 import ReactPaginate from "react-paginate";
-
+import styled from "styled-components";
 interface PaginateTwoProps {
   setCurrentPage: Dispatch<React.SetStateAction<number>>;
   forcePage?: number;
@@ -26,24 +26,22 @@ const PaginateTwo = ({
   const displayText = `Showing ${startItem} - ${endItem} of ${totalDocs}`;
 
   return (
-    <div className="flex flex-col gap-4 text-center py-3 pl-4 max-w-[540px]">
-      <h2 className="md:text-sm text-xxs font-bold text-gray-70 leading-5">
-        {displayText}
-      </h2>
+    <Wrapper>
+      <h2>{displayText}</h2>
       <ReactPaginate
         breakLabel="..."
-        containerClassName="flex w-full items-center gap-3 px-4"
+        containerClassName="paginate_classname"
         marginPagesDisplayed={1}
-        nextClassName="flex-1 flex justify-end"
-        pageClassName="flex items-center text-base font-semibold  justify-center py-1.5 px-3 bg-light-200  border border-solid border-light-200 text-blue-50 rounded-md transition-[.5] hover:bg-blue-50 hover:text-white outline-none cursor-pointer"
-        pageLinkClassName="font-inter md:text-sm text-xxs font-medium flex"
-        activeClassName="!bg-brand-100 dark:!bg-brand-200 border border-solid !border-brand-100 dark:!border-brand-200 text-white rounded-md"
-        previousClassName="flex-1"
+        nextClassName="nextClassName"
+        pageClassName="pageClassName"
+        pageLinkClassName="pageLinkClassName"
+        activeClassName="activeClassName"
+        previousClassName="previousClassName"
         previousLabel={
           <div
-            className={`flex w-fit py-2 font-bold px-3.5 text-sm items-center ${
+            className={`previousLabel ${
               currentPage === 1
-                ? " text-brand-300/40 dark:text-white/40 cursor-not-allowed"
+                ? " disabled"
                 : "cursor-pointer text-brand-300 dark:text-white"
             }`}
           >
@@ -56,9 +54,9 @@ const PaginateTwo = ({
         pageCount={pageCount}
         nextLabel={
           <div
-            className={`flex w-fit py-2 font-bold px-3.5 text-sm items-center ${
+            className={`nextLabel ${
               currentPage === pageCount
-                ? " cursor-not-allowed text-brand-300/40 dark:text-white/40"
+                ? " disabled"
                 : "cursor-pointer text-brand-300 dark:text-white"
             }`}
           >
@@ -67,8 +65,29 @@ const PaginateTwo = ({
         }
         renderOnZeroPageCount={null}
       />
-    </div>
+    </Wrapper>
   );
 };
 
 export default PaginateTwo;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+  padding: 12px 16px 12px 16px;
+  max-width: 540px;
+  width: 100%;
+  margin: 0 auto;
+  h2 {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--color-gray-700);
+    line-height: 1.25rem;
+
+    @media (min-width: 768px) {
+      font-size: 0.875rem;
+    }
+  }
+`;

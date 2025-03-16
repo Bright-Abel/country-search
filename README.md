@@ -59,7 +59,7 @@ Make sure you have the following installed:
 
    ```sh
    git clone https://github.com/Bright-Abel/country-search.git
-   cd country-list-viewer
+   cd country-search
    ```
 
 2. Install dependencies:

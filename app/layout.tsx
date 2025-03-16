@@ -4,7 +4,6 @@ import "./globals.css";
 
 import { Providers } from "@/providers/ThemeProvider";
 import NavBar from "@/components/NavBar";
-import ReduxProvider from "@/providers/redux-provider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -32,17 +31,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${poppins.variable} relative font-poppins antialiased max-w-[90rem] mx-auto w-full h-full bg-light-900 dark:bg-dark-200`}
-      >
-        <ReduxProvider>
-          <Providers>
-            <div className="w-full flex flex-col relative h-full ">
-              <NavBar />
-              <main className="p-4">{children}</main>
-            </div>
-          </Providers>
-        </ReduxProvider>
+      <body className={`${poppins.variable} `}>
+        <Providers>
+          <div className="inner-cont">
+            <NavBar />
+            <main>{children}</main>
+          </div>
+        </Providers>
       </body>
     </html>
   );
