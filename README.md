@@ -41,7 +41,7 @@ This project is a Next.js application that fetches and displays a list of countr
 - **Next.js** – React framework for server-side rendering and routing.
 - **Apollo Client** – Handles GraphQL queries and caching.
 - **GraphQL** – Fetches structured country data.
-- **Tailwind CSS** – Styles the application efficiently.
+- **Styled Components** – Styles the application efficiently.
 - **TypeScript** – Adds type safety to the project.
 
 ## Installation
